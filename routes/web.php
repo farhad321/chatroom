@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MessageSend;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +16,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    event(new MessageSend());
+
+//    broadcast(new \App\Events\MessageSend(new \App\Message()));
+
+//    dump(extension_loaded('redis'));
+//    return phpinfo();
+//    return view('welcome');
 });
 
-Route::view('message', 'message');
+Route::get('message', 'AdminController@index');
 Route::post('sendMessage', 'AdminController@sendMessage');
 Auth::routes();
 

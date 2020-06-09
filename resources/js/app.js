@@ -29,4 +29,18 @@ Vue.component('message', require('./components/message').default);
 
 const app = new Vue({
     el: '#app',
+    data: {
+        messages: []
+    },
+    created() {
+        // axios.get('/getAll').then(({data}) => {
+        //     this.messages = data;
+        // });
+        // Registered client on public channel to listen to MessageSent event
+        Echo.channel('laravel_database_aaa').listen('.UserEvent', (e) => {
+        // Echo.channel('public_').listen('.server', ({message}) => {
+            this.messages.push(e.message);
+            console.log(e);
+        });
+    }
 });

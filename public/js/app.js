@@ -1998,9 +1998,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "message",
+  data: function data() {
+    return {
+      message: 'سلام این اولین پیام من خواهد بود'
+    };
+  },
   methods: {
     sendMessage: function sendMessage() {
-      axios.post('/sendMessage');
+      axios({
+        method: 'post',
+        url: '/sendMessage',
+        data: {
+          'from': 1,
+          'to': 2,
+          'message': this.message
+        }
+      }).then(function (response) {
+        console.log(response);
+      });
     }
   }
 });
@@ -49370,6 +49385,7 @@ var render = function() {
             expression: "message"
           }
         ],
+        staticClass: "form-control form-text",
         attrs: { name: "", id: "", cols: "30", rows: "10" },
         domProps: { value: _vm.message },
         on: {
@@ -61672,7 +61688,24 @@ Vue.component('message', __webpack_require__(/*! ./components/message */ "./reso
  */
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    messages: []
+  },
+  created: function created() {
+    var _this = this;
+
+    // axios.get('/getAll').then(({data}) => {
+    //     this.messages = data;
+    // });
+    // Registered client on public channel to listen to MessageSent event
+    Echo.channel('laravel_database_aaa').listen('.UserEvent', function (e) {
+      // Echo.channel('public_').listen('.server', ({message}) => {
+      _this.messages.push(e.message);
+
+      console.log(e);
+    });
+  }
 });
 
 /***/ }),
@@ -61727,9 +61760,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.io = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'socket.io',
-  host: 'http://real.time:6001',
-  transports: ['websocket', 'polling', 'flashsocket']
+  // host: 'http://real.time:6001',
+  host: window.location.hostname + ':6001' // transports:['websocket','polling','flashsocket']
+
 });
+console.log(window.Echo);
 
 /***/ }),
 

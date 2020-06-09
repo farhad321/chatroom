@@ -76,5 +76,7 @@
             @yield('content')
         </main>
     </div>
+    <script src="01df6343635a.ngrok.io:6001/socket.io/socket.io.js"></script>
+{{--    <script src="//127.0.0.1:6001/socket.io/socket.io.js"></script>--}}
 </body>
 </html>
